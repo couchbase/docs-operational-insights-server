@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Operational Insights Logging REST API
-  version: '2.2'
+  version: '3.0'
   description: |
     This API enables you to view and modify the log levels of individual Operational Insights loggers at runtime,
     without restarting the service.

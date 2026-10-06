@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Cluster Settings REST API
-  version: '2.2'
+  version: '3.0'
   description: |
     This API enables you to view or set cluster-level Operational Insights settings.
 
