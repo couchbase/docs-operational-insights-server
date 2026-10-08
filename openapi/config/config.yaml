@@ -258,12 +258,14 @@ components:
         default: 3
       cloudAccessPreemptiveRefreshIntervalSeconds:
         description: >
-          The interval (in seconds) at which to attempt to preemptively verify cloud access.
-          If access is confirmed to be revoked, the process will halt. (0 == no preemptive refresh)
+          Deprecated: use `cloudAccessAttemptTimeoutSeconds` instead.
+          If this is set to a value other than -1, it is used as the default for `cloudAccessAttemptTimeoutSeconds`.
+          It is not returned when the configuration is read.
         type: integer
         format: int32
+        deprecated: true
         x-has-default: true
-        default: 30
+        default: -1
       cloudAccessPreemptiveRefreshSuspendAfterIdleSeconds:
         description: >
           How long (in seconds) preemptive cloud access refreshes should continue while no access checks are required.
@@ -446,6 +448,19 @@ components:
         format: int32
         x-has-default: true
         default: 600
+      compilerAggregateDistinctHash:
+        description: Enable/disable the use of a hash-based approach to compute aggregate `DISTINCT` operations.
+        type: boolean
+        x-has-default: true
+        default: true
+      compilerAggregateDistinctHashMemory:
+        description: The memory budget for a hash-based distinct aggregate instance in a partition. Accepts either an integer number of bytes or a byte string (e.g. `32MiB`).
+        oneOf:
+          - type: string
+          - type: integer
+            format: int64
+        x-has-default: true
+        default: "32 MiB"
       compilerArrayindex:
         description: Enable/disable using array-indexes in queries.
         type: boolean
@@ -461,6 +476,14 @@ components:
         type: boolean
         x-has-default: true
         default: true
+      compilerCboMaxjoins:
+        description: The maximum number of joins in a query for which cost-based optimization enumerates join orders.
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 19
+        x-has-default: true
+        default: 15
       compilerColumnFilter:
         description: Enable/disable the use of column min/max filters.
         type: boolean
@@ -544,6 +567,13 @@ components:
         type: boolean
         x-has-default: true
         default: true
+      compilerIndexVectorMaxNumClusters:
+        description: The maximum value of `num_clusters` that a vector index can be created with.
+        type: integer
+        format: int32
+        minimum: 1
+        x-has-default: true
+        default: 65536
       compilerJoinmemory:
         description: The memory budget for a join operator instance in a partition. Accepts either an integer number of bytes or a byte string (e.g. `32MiB`).
         oneOf:
@@ -623,6 +653,20 @@ components:
         type: boolean
         x-has-default: true
         default: false
+      compilerQueryPlanCache:
+        description: Enable/disable the use of the query plan cache.
+        type: boolean
+        x-has-default: true
+        default: true
+      compilerQueryPlanCacheCapacity:
+        description: >
+          The maximum number of plans held by the query plan cache. When the cache is full, the least recently used
+          plans are evicted. 0 disables the cache.
+        type: integer
+        format: int32
+        minimum: 0
+        x-has-default: true
+        default: 1000
       compilerQueryplanshape:
         description: Set the mode for forcing the shape of the query plan (e.g., `zigzag`, `leftdeep`, `rightdeep`).
         type: string
@@ -743,6 +787,21 @@ components:
         format: int32
         x-has-default: true
         default: 120
+      dcpStreamAllocationStrategy:
+        description: >
+          How DCP streams are allocated for an ingestion.
+          `STARTING_POSITION` allocates one stream per distinct starting position, so collections that have caught up
+          to one another share a stream, and streams are merged as they converge.
+          `KV_COLLECTION` allocates one stream per source collection, so all collections on the same source collection
+          share a single stream, and an established collection advances no further until a newly created one has
+          caught up to it.
+          `KV_COLLECTION` is always used for a bucket that does not support collections.
+        type: string
+        enum:
+          - STARTING_POSITION
+          - KV_COLLECTION
+        x-has-default: true
+        default: STARTING_POSITION
       dcpStreamRequestIncludePurgeSeqnos:
         description: Whether the DCP client should include the purge sequence number in stream requests, if supported by the producer.
         type: boolean
@@ -774,6 +833,29 @@ components:
         format: int64
         x-has-default: true
         default: 300
+      fileDescriptorAgeBuckets:
+        description: >
+          Histogram bucket boundaries, as increasing durations (e.g. `500ms`, `2m`), for how long a file had been idle
+          when the buffer cache released its descriptor, and how long a descriptor had been released when the file was
+          reopened.
+
+
+          **Default:** `1s`, `5s`, `15s`, `30s`, `1m`, `2m`, `5m`, `10m`, `30m`, `1h`.
+        type: array
+        items:
+          type: string
+        x-has-default: false
+      fileDescriptorReleasePassBuckets:
+        description: >
+          Histogram bucket boundaries, as increasing durations (e.g. `5ms`, `1s`), for the duration of a buffer cache
+          file descriptor release pass.
+
+
+          **Default:** `1ms`, `5ms`, `10ms`, `50ms`, `100ms`, `250ms`, `500ms`, `1s`, `2.5s`, `5s`.
+        type: array
+        items:
+          type: string
+        x-has-default: false
       frameProfilerByteBuckets:
         description: |-
           The frame-size histogram bucket boundaries, specified as byte values. Each entry accepts either an
@@ -812,6 +894,12 @@ components:
         format: int32
         x-has-default: true
         default: 204
+      icebergVariantEnabled:
+        description: Enable/disable support for Iceberg `VARIANT` columns.
+        type: boolean
+        x-has-default: true
+        default: true
+        x-internal: true
       ingestionMaxBootstrapIntervalSeconds:
         description: >
           The timeout (in seconds) to wait for remaining partitions to complete bootstrapping after at least one has
@@ -1056,6 +1144,17 @@ components:
         format: int64
         x-has-default: true
         default: 1800
+      storageBufferCacheMaxOpenDescriptors:
+        description: >
+          The maximum number of operating system file descriptors that the buffer cache aims to hold. Beyond this, the
+          descriptors of the least recently used files with no I/O in progress and no unforced writes are closed, and
+          reopened on their next I/O. 0 means half of the process's maximum number of open files, or unbounded where
+          that limit cannot be determined. Not applied on cloud storage.
+        type: integer
+        format: int32
+        minimum: 0
+        x-has-default: true
+        default: 0
       storageBuffercacheMaxopenfiles:
         description: The maximum number of open files in the buffer cache.
         type: integer
