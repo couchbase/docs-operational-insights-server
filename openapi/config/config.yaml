@@ -374,22 +374,24 @@ components:
         type: string
         x-has-default: true
         default: selective
-      #cloudStorageDebugModeEnabled:
-      #  description: Whether or not the debug mode is enabled when using the `selective` caching policy.
-      #  type: boolean
-      #  x-has-default: true
-      #  default: false
-      #cloudStorageDebugSweepThresholdSize:
-      #  description: >
-      #    For debugging only. Overrides `cloudStorageSweepThresholdPercentage` — pressure size will be the current
-      #    used space plus the additional bytes provided by this option instead of using the percentage threshold.
-      #    Accepts either an integer number of bytes or a byte string (e.g. `1GiB`).
-      #  oneOf:
-      #    - type: string
-      #    - type: integer
-      #      format: int64
-      #  x-has-default: true
-      #  default: "1 GiB"
+      cloudStorageDebugModeEnabled:
+        description: Whether or not the debug mode is enabled when using the `selective` caching policy.
+        type: boolean
+        x-has-default: true
+        default: false
+        x-internal: true
+      cloudStorageDebugSweepThresholdSize:
+        description: >
+          For debugging only. Overrides `cloudStorageSweepThresholdPercentage` — pressure size will be the current
+          used space plus the additional bytes provided by this option instead of using the percentage threshold.
+          Accepts either an integer number of bytes or a byte string (e.g. `1GiB`).
+        oneOf:
+          - type: string
+          - type: integer
+            format: int64
+        x-has-default: true
+        default: "1 GiB"
+        x-internal: true
       cloudStorageDiskMonitorInterval:
         description: >
           The disk monitoring interval time (in seconds) that determines how often the system checks for pressure on disk
