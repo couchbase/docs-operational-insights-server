@@ -900,7 +900,7 @@ components:
         description: Enable/disable support for Iceberg `VARIANT` columns.
         type: boolean
         x-has-default: true
-        default: true
+        default: false
         x-internal: true
       ingestionMaxBootstrapIntervalSeconds:
         description: >
