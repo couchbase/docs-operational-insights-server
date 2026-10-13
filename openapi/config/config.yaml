@@ -512,10 +512,12 @@ components:
           The number of disjunctions after which a hash-based approach is used for evaluating OR operations. -1 disables the hash-based approach.
 
           **Available from Operational Insights 2.1.1.**
+          The default is `40` for clusters provisioned from 2.1.1 onwards.
+          Clusters upgraded to 2.1.1 have this set to `-1` (disabled) to preserve pre-upgrade behavior.
         type: integer
         format: int32
         x-has-default: true
-        default: -1
+        default: 40
       compilerExternalFieldPushdown:
         description: Enable pushdown of field accesses to the external data-scan operator.
         type: boolean
@@ -628,17 +630,17 @@ components:
           when the number of OR/AND function arguments is greater than or equal to the specified value.
 
           **Available from Operational Insights 2.1.1.**
-          The default is `200` for clusters provisioned from 2.1.1 onwards.
+          The default is `100` for clusters provisioned from 2.1.1 onwards.
           Clusters upgraded to 2.1.1 have this set to `2147483647` (unlimited) to preserve pre-upgrade behavior.
         type: integer
         format: int32
         x-has-default: true
-        default: 200
+        default: 100
       compilerOrderedFields:
         description: Enable/disable select order list.
         type: boolean
         x-has-default: true
-        default: false
+        default: true
       compilerParallelism:
         description: >
           The degree of parallelism for query execution.
@@ -935,7 +937,7 @@ components:
           - type: integer
             format: int64
         x-has-default: true
-        default: 0
+        default: -1
       jsonMaxNameLength:
         description: The maximum length of a JSON field name. Accepts either an integer number of bytes or a byte string.
         oneOf:
@@ -967,7 +969,7 @@ components:
         type: integer
         format: int64
         x-has-default: true
-        default: 0
+        default: -1
       jvmArgs:
         description: |-
           JVM arguments to pass to the Analytics Driver.
@@ -1023,10 +1025,14 @@ components:
         x-has-default: true
         default: 209715200
       metadataAuthorizationEnabled:
-        description: Whether authorization is applied when viewing metadata objects.
+        description: |-
+          Whether authorization is applied when viewing metadata objects.
+
+          The default is `true` for clusters provisioned from Operational Insights 3.0 onwards.
+          Clusters upgraded to 3.0 have this set to `false` to preserve pre-upgrade behavior.
         type: boolean
         x-has-default: true
-        default: false
+        default: true
       metadataRegistrationTimeoutSecs:
         description: How long (in seconds) to wait for the metadata node to register with the cluster controller.
         type: integer
@@ -1055,7 +1061,7 @@ components:
         type: integer
         format: int32
         x-has-default: true
-        default: 0
+        default: 15
       # unused in EA as we don't rebalance datasets, we reassign storage partitions
       #rebalancePullDatasetSizeFrequency:
       #  description: The frequency (in seconds) at which the Analytics collection size is pulled from nodes during rebalance.
