@@ -155,7 +155,7 @@ components:
           (e.g., for self-signed or private/internal CA certificates).
           Multiple certificates can be provided to support certificate rotation.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
         x-has-example: true
         example:
           - "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
@@ -167,7 +167,7 @@ components:
           If omitted, the Standard Credential Chain is used (instance profile, environment variables, etc.) to obtain credentials automatically.
           See also `blobStorageAnonymousAuth` for anonymous access.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
         x-has-example: true
         example: AKIAIOSFODNN7EXAMPLE
       blobStorageSecretAccessKey:
@@ -178,7 +178,7 @@ components:
           If omitted, the Standard Credential Chain is used (instance profile, environment variables, etc.) to obtain credentials automatically.
           On input, supply the actual secret value. In logs and in responses from the API this value is masked as `***` for security reasons.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
         x-has-example: true
         example: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
       blobStorageChecksumBehavior:

@@ -330,7 +330,7 @@ components:
         description: |-
           The time (in seconds) after which an idle cloud connection will be closed. (0 == unlimited idle)
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
         type: integer
         format: int32
         x-has-default: true
@@ -339,7 +339,7 @@ components:
         description: |-
           The time (in seconds) after which a cloud connection will no longer be reused. (0 == unlimited lifetime)
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
         type: integer
         format: int32
         x-has-default: true
@@ -501,7 +501,7 @@ components:
         description: |-
           Rewrite disjunctions to joins in query plans.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
           The default is `false` for clusters provisioned from 2.1.1 onwards.
           Clusters upgraded to 2.1.1 have this set to `true` to preserve pre-upgrade behavior.
         type: boolean
@@ -511,7 +511,7 @@ components:
         description: |-
           The number of disjunctions after which a hash-based approach is used for evaluating OR operations. -1 disables the hash-based approach.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
           The default is `40` for clusters provisioned from 2.1.1 onwards.
           Clusters upgraded to 2.1.1 have this set to `-1` (disabled) to preserve pre-upgrade behavior.
         type: integer
@@ -535,7 +535,7 @@ components:
         description: |-
           The maximum number of common expressions to extract.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
           The default is `100` for clusters provisioned from 2.1.1 onwards.
           Clusters upgraded to 2.1.1 have this set to `2147483647` (unlimited) to preserve pre-upgrade behavior.
         type: integer
@@ -629,7 +629,7 @@ components:
           Avoid costly O(N^2) expression optimization passes (e.g. constant folding, CSE) on large IN-list queries
           when the number of OR/AND function arguments is greater than or equal to the specified value.
 
-          **Available from Operational Insights 2.1.1.**
+          **Available from Enterprise Analytics 2.1.1.**
           The default is `100` for clusters provisioned from 2.1.1 onwards.
           Clusters upgraded to 2.1.1 have this set to `2147483647` (unlimited) to preserve pre-upgrade behavior.
         type: integer
