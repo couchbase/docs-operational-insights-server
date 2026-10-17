@@ -295,6 +295,25 @@ components:
         description: An integer specifying the maximum number of warning messages to be included in the query response.
         x-has-default: true
         default: 0
+      multi-statement:
+        type: boolean
+        description: |-
+          If `true`, the request may contain more than 1 statement, separated by semicolons.
+          If `false`, a request that contains more than 1 statement fails with error 21003.
+
+          The statements run in order.
+          If a statement fails, the statements before it keep their responses and the statements after it are not executed.
+
+          A request with more than 1 statement returns a separate response for each statement in the `statements` array —
+          refer to [Query Responses](#Responses).
+          A request with only 1 statement returns the usual response, even when this parameter is `true`.
+          `USE`, `SET`, and `DECLARE FUNCTION` statements do not count towards the number of statements,
+          but they do get an entry of their own in the `statements` array.
+
+          A request with more than 1 statement cannot run in `async` mode, and fails with error 24320.
+          The `max-warnings` limit applies to each statement separately.
+        x-has-default: true
+        default: false
 
   # For the REST API reference
   # The odd definition names ensure that the schemas appear in a logical order
@@ -370,6 +389,52 @@ components:
             $ref: "#/components/schemas/ResponsesLocalPlans"
           metrics:
             $ref: "#/components/schemas/ResponsesLocalYardsticks"
+          statements:
+            type: array
+            description: |-
+              An array of statement responses, 1 for each statement in the request, in the order they were submitted.
+              Present only when the `multi-statement` parameter is `true` and the request contains more than 1 statement —
+              refer to `multi-statement` in [Query Parameters](#Parameters).
+
+              When this array is present, each statement's `signature`, `results`, `plans`, `errors`, `warnings`, and per-statement metrics
+              are reported in its entry rather than at the top level.
+              The top level carries the `requestID`, the overall `status`, and the `elapsedTime` and `executionTime` for the whole request.
+
+              If a statement fails, its entry carries the error and the statements after it get no entry.
+              The overall `status` is `success` if at least 1 statement executed successfully.
+            items:
+              type: object
+              properties:
+                statementId:
+                  type: integer
+                  description: The position of the statement in the request, starting at 1.
+                signature:
+                  type: object
+                  description: The schema of the statement's results.
+                results:
+                  type: array
+                  description: An array of all the objects returned by the statement.
+                  items: {}
+                plans:
+                  $ref: "#/components/schemas/ResponsesLocalPlans"
+                status:
+                  $ref: "#/components/schemas/RequestStatus"
+                errors:
+                  type: array
+                  description: An array of error objects. Present only if the statement failed.
+                  items:
+                    $ref: "#/components/schemas/ResponsesCommonErrors"
+                warnings:
+                  type: array
+                  description: An array of warning objects raised by the statement.
+                  items:
+                    $ref: "#/components/schemas/ResponsesCommonWarnings"
+                metrics:
+                  type: object
+                  description: >
+                    Metrics for the statement:
+                    `compileTime`, `queueWaitTime`, `resultCount`, `resultSize`, `processedObjects`, and `warningCount`.
+                    These have the same meaning as the corresponding request metrics, scoped to the statement.
 
   # For the Query Responses page
   ResponsesCommonErrors:
