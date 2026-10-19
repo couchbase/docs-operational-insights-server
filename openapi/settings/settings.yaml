@@ -32,7 +32,7 @@ servers:
           - "18091"
 
 paths:
-  /settings/analytics:
+  /settings/operationalInsights:
     get:
       operationId: get_settings
       summary: View Operational Insights Settings
