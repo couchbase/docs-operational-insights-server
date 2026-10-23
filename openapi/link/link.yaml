@@ -486,9 +486,7 @@ components:
           Passing this parameter indicates that the credentials are temporary.
           The Amazon S3 service validates the session token with each request to check whether the provided credentials have expired or are still valid.
       instanceProfile:
-        type: string
-        enum:
-          - 'true'
+        type: boolean
         description: >
           For S3 links only.
           If set to `true`, the link uses the EC2 instance profile for authentication.
@@ -600,15 +598,12 @@ components:
           You should URL-encode this parameter to escape any special characters.
       # The following authentication methods are implemented but not yet supported for general use:
 #       managedIdentity:
-#         type: string
+#         type: boolean
 #         description: >
 #           For Azure Blob links only.
-#           The managed identity ID.
-#           Used for managed identity authentication.
+#           If set to `true`, the link uses managed identity authentication: a user-assigned managed identity if
+#           `clientId` is also given, otherwise the system-assigned one.
 #           Only available if the application is running on an Azure instance, e.g. an Azure virtual machine.
-#
-#
-#           You should URL-encode this parameter to escape any special characters.
 #       clientId:
 #         type: string
 #         description: >
@@ -656,8 +651,6 @@ components:
 
 
           This parameter is not allowed if `applicationDefaultCredentials` is provided.
-      # NOTE: documented as the intended boolean. The service currently accepts only the string
-      # "true" (and rejects false); this will be aligned to a real boolean. See MB-72371.
       applicationDefaultCredentials:
         type: boolean
         description: |-
@@ -1062,13 +1055,12 @@ components:
             x-has-example: false
             example: null
           instanceProfile:
-            type: string
-            nullable: true
+            type: boolean
             description: >
               Whether the EC2 instance profile is used for authentication.
-              If not set, this property returns `null`.
-            x-has-example: false
-            example: null
+              Omitted when `false`.
+            x-has-example: true
+            example: true
           pathStyleAddressing:
             type: boolean
             description: >
@@ -1188,14 +1180,12 @@ components:
             example: my.endpoint.uri
           # The following properties are for authentication methods that are implemented but not yet supported for general use:
 #           managedIdentity:
-#             type: string
-#             nullable: true
+#             type: boolean
 #             description: >
-#               The managed identity ID.
-#               Used for managed identity authentication.
-#               If not set, this property returns `null`.
+#               Whether managed identity authentication is used.
+#               Omitted when `false`.
 #             x-has-example: true
-#             example: myManagedIdentityID
+#             example: true
           sharedAccessSignature:
             type: string
             nullable: true
@@ -1228,12 +1218,11 @@ components:
     title: GCS Specific Response
     type: object
     properties:
-      # NOTE: documented as the intended boolean. The service currently returns the string
-      # "true" (omitted when unset) rather than a JSON boolean. See MB-72371.
       applicationDefaultCredentials:
         type: boolean
         description: >
           Whether the link uses Google Application Default Credentials for authentication.
+          Omitted when `false`.
         x-has-example: true
         example: true
       disableSslVerify:
