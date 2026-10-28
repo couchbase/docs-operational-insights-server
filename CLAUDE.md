@@ -14,13 +14,14 @@ Read it first.
 - **Keep each spec self-contained.** Only use `$ref`s to `#/components/...` in
   the same file. A relative `$ref` to another file would be resolved against the
   raw URL at docs build time, which is fragile.
-- **Pick the branch by release, not by convenience.** `helios` is Operational
-  Insights 3.0, `lumina` is Enterprise Analytics 2.2, and `phoenix` is
-  Enterprise Analytics 2.0/2.1. Product naming differs by branch: specs on
-  `helios` say "Operational Insights" and specs on `phoenix`/`lumina` say
-  "Enterprise Analytics". Do not carry naming across.
+- **Pick the branch by release, not by convenience.** `selene` is Operational
+  Insights 3.1, `helios` is Operational Insights 3.0, `lumina` is Enterprise
+  Analytics 2.2, and `phoenix` is Enterprise Analytics 2.0/2.1. Product naming
+  differs by branch: specs on `helios`/`selene` say "Operational Insights" and
+  specs on `phoenix`/`lumina` say "Enterprise Analytics". Do not carry naming
+  across.
 - **Fix on the oldest affected branch, then merge forward**
-  (`phoenix` → `lumina` → `helios`). Do not cherry-pick backwards.
+  (`phoenix` → `lumina` → `helios` → `selene`). Do not cherry-pick backwards.
 - **Describe the server as it behaves.** A spec is the contract readers code
   against. When documenting a parameter, response or status code, check it
   against the server implementation rather than inferring it from neighbouring
