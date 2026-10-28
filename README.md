@@ -24,12 +24,13 @@ Each branch describes one release line. The docs read each branch directly:
 
 | Branch | Release | Read by docs branch |
 |---|---|---|
+| `selene` | Operational Insights 3.1 | `release/3.1` |
 | `helios` (default) | Operational Insights 3.0 | `release/3.0` |
 | `lumina` | Enterprise Analytics 2.2 | `release/2.2` |
 | `phoenix` | Enterprise Analytics 2.0, 2.1 | `release/2.0`, `release/2.1` |
 
-`phoenix` is an ancestor of `lumina`, and `lumina` of `helios`. Make a fix on the
-oldest branch it applies to, then merge it forward.
+`phoenix` is an ancestor of `lumina`, `lumina` of `helios`, and `helios` of
+`selene`. Make a fix on the oldest branch it applies to, then merge it forward.
 
 ## How the docs use these files
 
