@@ -522,7 +522,8 @@ components:
         description: >
           For S3 links only.
           If set to `true`, uses path-style addressing for S3 requests instead of virtual-hosted-style.
-          Defaults to `true` if `serviceEndpoint` is set.
+          Defaults to `false`.
+          Set it to `true` for an S3-compatible object store that does not support virtual-hosted-style requests.
       disableSslVerify:
         type: boolean
         description: >
